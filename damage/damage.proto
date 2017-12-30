@@ -1,0 +1,17 @@
+syntax = "proto3";
+package damage;
+
+import "google/api/annotations.proto";
+
+message DamageMessage {
+  string value = 1;
+}
+
+service DamageService {
+  rpc Damage(DamageMessage) returns (DamageMessage) {
+    option(google.api.http) = {
+      post: "/v1/damage"
+      body: "*"
+    };
+  }
+}
