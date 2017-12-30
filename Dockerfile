@@ -1,10 +1,14 @@
 FROM golang:1.9.2-alpine3.7
 
-WORKDIR /usr/local/go/src/github.com/knabben/grpc/
-COPY . /usr/local/go/src/github.com/knabben/grpc/ 
+RUN apk update && apk add git
+
+WORKDIR /go/src/github.com/knabben/grpc-ex/ 
+COPY . /go/src/github.com/knabben/grpc-ex/ 
 
 RUN go get -u github.com/golang/dep/cmd/dep
 RUN dep ensure
 
 RUN go build .
-CMD sh
+
+ENTRYPOINT ["go", "run", "main.go"]
+CMD ["serve"]

@@ -1,5 +1,5 @@
-
 package insecure
+
 const (
 	Key = `-----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEA6qvciqgFyxVBPumhBahmpjRGWiGOqzT4q3XaFskxzlTLmtIf
