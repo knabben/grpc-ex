@@ -1,6 +1,6 @@
 package main
 
-import "github.com/knabben/grpc/cmd"
+import "github.com/knabben/grpc-ex/cmd"
 
 func main() {
 	cmd.Execute()
