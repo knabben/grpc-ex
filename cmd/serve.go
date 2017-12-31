@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
@@ -53,6 +54,10 @@ func preflightHandler(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+func Health(w http.ResponseWriter, req *http.Request) {
+	io.WriteString(w, "OK\n")
+}
+
 func serve() error {
 	fmt.Printf("Access remote GRPC on %s\n", remoteGrpc)
 	fmt.Printf("Listening on port %d\n", port)
@@ -72,6 +77,7 @@ func serve() error {
 	}
 
 	mux.Handle("/", gwmux)
+	mux.HandleFunc("/v1/health", Health)
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), allowCORS(mux))
 }

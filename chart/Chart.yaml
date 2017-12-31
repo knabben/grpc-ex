@@ -1,0 +1,4 @@
+apiVersion: v1
+description: The helm chart
+name: grpc
+version: 0.1.0
