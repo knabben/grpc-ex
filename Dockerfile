@@ -1,6 +1,6 @@
 FROM golang:1.9.2-alpine3.7
 
-RUN apk update && apk add git
+RUN apk update && apk add git tcpdump
 
 WORKDIR /go/src/github.com/knabben/grpc-ex/ 
 COPY . /go/src/github.com/knabben/grpc-ex/ 
@@ -10,5 +10,5 @@ RUN dep ensure
 
 RUN go build .
 
-ENTRYPOINT ["go", "run", "main.go"]
+ENTRYPOINT ["./grpc-ex"]
 CMD ["serve"]

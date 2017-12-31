@@ -1,12 +1,10 @@
 run:
 	go run main.go serve
 
-fetch:
-	go run main.go echo "fetch value"
-
-
-build:
-	@docker build -t grpc .
+build-push:
+	@docker build -t grpc:latest .
+	@docker tag grpc knabben/grpc:latest
+	@docker push knabben/grpc:latest
 
 create-cert:
 	@cfssl gencert -initca certs/ca-csr.json | cfssljson -bare server
