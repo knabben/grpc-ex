@@ -1,9 +1,29 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "..fullname" . }}
+  name: http-serve
   labels:
-    app: {{ template "..name" . }}
+    app: http-serve
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http-serve
+  selector:
+    app: http-serve
+    release: {{ .Release.Name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-internal
+  labels:
+    app: grpc-internal
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -13,11 +33,7 @@ spec:
     - port: 9090
       targetPort: 9090
       protocol: TCP
-      name: grpc
-    - port: 8080
-      targetPort: 8080
-      protocol: TCP
-      name: serve
+      name: grpc-internal
   selector:
-    app: {{ template "..name" . }}
+    app: grpc-internal
     release: {{ .Release.Name }}

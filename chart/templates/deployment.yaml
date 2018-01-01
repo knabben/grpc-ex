@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "..fullname" . }}
+  name: http-serve
   labels:
-    app: {{ template "..name" . }}
+    app: http-serve
     chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -12,7 +12,34 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "..name" . }}
+        app: http-serve
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: serve
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["serve", "--grpc", "grpc-internal:9090"]
+          ports:
+            - containerPort: 8080
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: grpc-internal
+  labels:
+    app: grpc-internal
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: grpc-internal
         release: {{ .Release.Name }}
     spec:
       containers:
@@ -24,15 +51,4 @@ spec:
             - containerPort: 9090
           resources:
 {{ toYaml .Values.resources | indent 12 }}
-        - name: serve
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          args: ["serve", "--grpc", "grpc-grpc:9090"]
-          ports:
-            - containerPort: 8080
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
-    {{- if .Values.nodeSelector }}
-      nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
-    {{- end }}
+ 

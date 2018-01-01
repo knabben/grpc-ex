@@ -8,7 +8,10 @@ spec:
   rules:
   - http:
       paths:
-      - path: /v1/damage
+      - path: /v1/.*
         backend:
-          serviceName: grpc-grpc
+          serviceName: http-serve
           servicePort: 8080
+      - backend:
+          serviceName: grpc-internal
+          servicePort: 9090
