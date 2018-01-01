@@ -1,5 +1,9 @@
 run:
-	go run main.go serve
+	go run main.go serve&
+	go run main.go grpc&
+
+install-deps:
+	dep ensure
 
 build-push:
 	@docker build -t grpc:latest .
