@@ -35,7 +35,7 @@ metadata:
   name: analyticprom
   namespace: istio-system
 spec:
-  match: match(request.path, "/v1/damage?analyic=*")
+  match: match(request.path, "/v1/damage?analytic=*")
   actions:
   - handler: promhandler.prometheus
     instances:
